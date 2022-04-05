@@ -40,7 +40,7 @@ export default class DropZone {
 			if (droppedItemElement.contains(dropZone)) {
 				return;
 			}
-
+			console.log("Dropzone");
 			insertAfter.after(droppedItemElement);
 			KanbanAPI.updateItem(itemId, {
 				columnId,

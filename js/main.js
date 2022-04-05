@@ -7,6 +7,24 @@ new Kanban(
 
 const priorityButtons = document.getElementsByClassName('kanban__item-priority');
 for ( let i of priorityButtons){
+
+//AL CARGAR LA PAG
+  switch(i.value){
+    case '-1':
+      i.style.background = "linear-gradient(to right, #393e46 50%, #67696B )";
+       break;
+    case '0':
+      i.style.background = "linear-gradient(to right, #2563eb 60%, #60a5fa )";    
+       break;
+    case '1':
+      i.style.background = "linear-gradient(to right, #059669 50%, #34d399 )";    
+       break;
+    case '2':
+      i.style.background = "linear-gradient(to right, #D9433F 50%, #FA7A76 )";    
+       break;            
+  }
+
+//CUANDO CAMBIA DE PRIORIDAD  
   i.addEventListener('change', (event) =>{
 
   	//console.log(i.value);
@@ -18,10 +36,10 @@ for ( let i of priorityButtons){
  			i.style.background = "linear-gradient(to right, #2563eb 60%, #60a5fa )"; 		
     	 break;
  		case '1':
-  			i.style.background = "linear-gradient(to right, #059669 50%, #34d399 )";		
+  		i.style.background = "linear-gradient(to right, #059669 50%, #34d399 )";		
     	 break;
  		case '2':
-  			i.style.background = "linear-gradient(to right, #D9433F 50%, #FA7A76 )";		
+  		i.style.background = "linear-gradient(to right, #D9433F 50%, #FA7A76 )";		
     	 break;    	     	 
  	}
 

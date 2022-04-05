@@ -54,6 +54,10 @@
 	
 }
 
+.kanban__item-priority option{
+	background: #393e46 ;
+}
+
 /*
 DEFAULT:
 	background: linear-gradient(to right, #393e46 50%, #67696B );
@@ -71,22 +75,22 @@ GREEN:
 
 /*.kanban__item-priority option{
 	background:#393e46;
-}*/
+}
 .kanban__item-priority option:checked{
 	background:#393e46 !important;
 }
-/*
+
 .kanban__item-priority option[value="0"]{
 	background: blue;
-}*/
-.kanban__item-priority option{
-	background: #393e46 ;
 }
 
 .kanban__item-priority > option:hover{
 
 	background: purple;
 }
+*/
+
+
 
 
 

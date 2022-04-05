@@ -42,7 +42,7 @@ export default class Column {
 	}
 
 	renderItem(data) {
-		const item = new Item(data.id, data.content);
+		const item = new Item(data.id, data.content, data.priority);
 
 		this.elements.items.appendChild(item.elements.root);
 	}

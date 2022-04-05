@@ -27,7 +27,7 @@ export default class KanbanAPI {
 		return item;
 	}
 
-	static updateItem(itemId, newProps) {
+	static updateItem(itemId, newProps, newPriority) {
 		const data = read();
 		const [item, currentColumn] = (() => {
 			for (const column of data) {
@@ -42,8 +42,14 @@ export default class KanbanAPI {
 		if (!item) {
 			throw new Error("Item not found.");
 		}
-
+		console.log("ITEM"+item);
+		//debugger;
 		item.content = newProps.content === undefined ? item.content : newProps.content;
+
+		if (newPriority != null ){
+			console.log("ENTRO");
+			item.priority = newPriority.priority; 
+		}
 
 		// Update column and position
 		if (
@@ -64,6 +70,7 @@ export default class KanbanAPI {
 		}
 
 		save(data);
+		console.log(data);
 	}
 
 	static deleteItem(itemId) {
