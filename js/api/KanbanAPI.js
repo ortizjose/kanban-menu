@@ -14,7 +14,8 @@ export default class KanbanAPI {
 		const column = data.find(column => column.id == columnId);
 		const item = {
 			id: Math.floor(Math.random() * 100000),
-			content
+			content,
+			priority: 0
 		};
 
 		if (!column) {

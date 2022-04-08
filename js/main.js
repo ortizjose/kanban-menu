@@ -6,6 +6,20 @@ new Kanban(
 
 
 const priorityButtons = document.getElementsByClassName('kanban__item-priority');
+const addButtons = document.getElementsByClassName('kanban__add-item');
+
+for (let a of addButtons){
+
+  a.addEventListener('click', (event) =>{
+
+  //console.log("RELOAD");
+  location.reload(true);
+
+    });
+}
+
+
+
 for ( let i of priorityButtons){
 
 //AL CARGAR LA PAG
@@ -44,5 +58,8 @@ for ( let i of priorityButtons){
  	}
 
   });
-
 }
+
+
+
+
