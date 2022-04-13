@@ -58,13 +58,13 @@
 	background: #393e46 ;
 }
 
-.kanban__colum-select {
+.kanban__column-select {
 
 	text-align: center;
 	display: none;
 }
 
-.kanban__colum-button {
+.kanban__column-button {
 		margin-top: 3%;
 	padding: 2%;
 	font-size: 13px;

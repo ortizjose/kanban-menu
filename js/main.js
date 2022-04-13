@@ -4,10 +4,9 @@ new Kanban(
 	document.querySelector(".kanban")
 );
 
-
 const priorityButtons = document.getElementsByClassName('kanban__item-priority');
 const addButtons = document.getElementsByClassName('kanban__add-item');
-
+console.log(priorityButtons);
 for (let a of addButtons){
 
   a.addEventListener('click', (event) =>{

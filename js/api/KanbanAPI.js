@@ -29,6 +29,8 @@ export default class KanbanAPI {
 	}
 
 	static updateItem(itemId, newProps, newPriority) {
+		console.log("update: "+itemId+" || "+newProps+" || "+newPriority);
+
 		const data = read();
 		const [item, currentColumn] = (() => {
 			for (const column of data) {

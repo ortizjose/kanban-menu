@@ -37,10 +37,15 @@ export default class DropZone {
 			const droppedItemElement = document.querySelector(`[data-id="${itemId}"]`);
 			const insertAfter = dropZone.parentElement.classList.contains("kanban__item") ? dropZone.parentElement : dropZone;
 
+
+
 			if (droppedItemElement.contains(dropZone)) {
 				return;
 			}
-			console.log("Dropzone");
+			debugger;
+			console.log(dropZone.parentElement.classList.contains("kanban__item"));
+			console.log(dropZone);
+			console.log("Dropzone: "+itemId+" || "+columnId+" || "+droppedIndex);
 			insertAfter.after(droppedItemElement);
 			KanbanAPI.updateItem(itemId, {
 				columnId,
@@ -50,4 +55,25 @@ export default class DropZone {
 
 		return dropZone;
 	}
+
+
+	static changeColumn(itemId){
+
+		console.log("CC");
+		this.dz = {};
+		this.dz = DropZone.createDropZone();
+		console.log(this.dz);
+		const droppedItemElement = document.querySelector(`[data-id="${itemId}"]`);	
+		console.log(this.dz.parentElement);		
+		//const insertAfter = this.dz.parentElement.classList.contains("kanban__item") ? this.dz.parentElement : this.dz;
+
+		if (droppedItemElement.contains(dz)) {
+		return;
+		}
+
+		insertAfter.after(droppedItemElement);		
+
+	}
+
+
 }
