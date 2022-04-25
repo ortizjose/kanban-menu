@@ -57,23 +57,6 @@ export default class DropZone {
 	}
 
 
-	static changeColumn(itemId){
-
-		console.log("CC");
-		this.dz = {};
-		this.dz = DropZone.createDropZone();
-		console.log(this.dz);
-		const droppedItemElement = document.querySelector(`[data-id="${itemId}"]`);	
-		console.log(this.dz.parentElement);		
-		//const insertAfter = this.dz.parentElement.classList.contains("kanban__item") ? this.dz.parentElement : this.dz;
-
-		if (droppedItemElement.contains(dz)) {
-		return;
-		}
-
-		insertAfter.after(droppedItemElement);		
-
-	}
 
 
 }

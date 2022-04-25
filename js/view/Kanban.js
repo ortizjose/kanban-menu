@@ -1,4 +1,5 @@
 import Column from "./Column.js";
+import Modal from "./Modal.js";
 
 export default class Kanban {
 	constructor(root) {

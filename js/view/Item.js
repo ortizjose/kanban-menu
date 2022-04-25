@@ -1,9 +1,15 @@
 import DropZone from "./DropZone.js";
 import KanbanAPI from "../api/KanbanAPI.js";
+import Column from "./Column.js"
+import Modal from "./Modal.js"
+import bootstrap from "bootstrap"
 
 export default class Item {
 	constructor(id, content, priority) {
 		const bottomDropZone = DropZone.createDropZone();
+		//debugger;	
+		const ModalButton = Modal.createModal(id);
+
 
 		this.elements = {};
 		this.elements.root = Item.createRoot();
@@ -21,25 +27,22 @@ export default class Item {
 		this.elements.select.value = priority;
 		this.content = content;
 		this.priority = priority;
-		console.log("PRIORIDAD THIS: "+this.priority);
 		this.elements.root.appendChild(bottomDropZone);
+		this.elements.root.appendChild(ModalButton);
 
 		const onBlur = () => {
 			const newContent = this.elements.input.textContent.trim();
 			const newPriority = this.elements.select.value.trim();
 
 
-			console.log("PRIORIDAD: "+newPriority);
-
 			if (newContent == this.content && newPriority == this.priority) {
-				console.log("INPUT && SELECT IGUAL");
 				return;
 			}
 
 			this.content = newContent;
 			this.priority = newPriority;
 
-			console.log("ENVIADO: "+{priority: this.priority});
+			console.log("ENVIADO: "+id+" || "+this.content+" || "+{priority: this.priority});
 
 			KanbanAPI.updateItem(id, {content: this.content}, {priority: this.priority});
 		};
@@ -88,6 +91,10 @@ export default class Item {
 				}
 				else { // Pulsacion larga
 					console.log("¿BORRAR?");
+					console.log(document.getElementById("modal"+id));
+					var myModal = new bootstrap.Modal(ModalButton, {});
+					myModal.show();
+
 				}
 
 			console.log(touchend-touchstart);
@@ -95,45 +102,50 @@ export default class Item {
 		});
 
 
-		/* Change column mobille start 
-		const dropZone = new DropZone();
-		console.log(dropZone.dropZone);
+		/* Change column mobille start */ 
 
 		this.elements.buttonColum1.addEventListener("click", () => {
 
-			console.log("HOLA1");
+			console.log("COL1");
+			var colPos = KanbanAPI.getNumItemsCol(id,1);
+			console.log("CP:"+colPos)
+
+			KanbanAPI.updateItem(id,{
+				columnId: 1,
+				position: colPos
+			});
+			location.reload(true);			
 
 		});
 
-		this.elements.buttonColum2.addEventListener("click", e => {
-			console.log("HOLA2 "+id);
+		this.elements.buttonColum2.addEventListener("click", event => {
+			console.log("COL2 "+id);
 
-			const droppedItemElement = document.querySelector(`[data-id="${id}"]`);			
-			const insertAfter = dropZone.parentElement.classList.contains("kanban__item") ? dropZone.parentElement : dropZone;
-
-			if (droppedItemElement.contains(dropZone)) {
-				return;
-			}
-
-			insertAfter.after(droppedItemElement);
+			var colPos = KanbanAPI.getNumItemsCol(id,2);
+			console.log("CP:"+colPos)
 
 			KanbanAPI.updateItem(id,{
 				columnId: 2,
-				position: 1
+				position: colPos
 			});
 			location.reload(true);
 		});
 
 		this.elements.buttonColum3.addEventListener("click", () => {
 
-			console.log("HOLA3");
+			console.log("COL3");
+			var colPos = KanbanAPI.getNumItemsCol(id,3);
+			console.log("CP:"+colPos)
+
+			KanbanAPI.updateItem(id,{
+				columnId: 3,
+				position: colPos
+			});
+			location.reload(true);			
 
 		});
-		 Change column mobille stop */
+		 /*Change column mobille end */
 
-		this.elements.buttonColum2.addEventListener("click", e => {
-				DropZone.changeColumn(id);
-		});
 
 
 

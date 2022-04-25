@@ -45,7 +45,6 @@ export default class KanbanAPI {
 		if (!item) {
 			throw new Error("Item not found.");
 		}
-		console.log("ITEM"+item);
 		//debugger;
 		item.content = newProps.content === undefined ? item.content : newProps.content;
 
@@ -89,6 +88,16 @@ export default class KanbanAPI {
 
 		save(data);
 	}
+
+	static getNumItemsCol(itemId, colId) {
+		const data = read();
+
+		for (const column of data) {
+			if (column.id === colId)
+				return column.items.length;
+		}
+
+	}	
 }
 
 function read() {
