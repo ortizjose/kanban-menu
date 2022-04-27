@@ -65,7 +65,7 @@
 }
 
 .kanban__column-button {
-		margin-top: 3%;
+	margin-top: 3%;
 	padding: 2%;
 	font-size: 13px;
 	color: white;
@@ -75,6 +75,63 @@
 	border-radius: 5px;
 
 }
+
+.kanban__modal-back {
+ 	display: none;
+	background-color: rgba(0, 0, 0, 0.4);
+	align-items: center;
+    justify-content: center;
+    position: fixed;
+    pointer-events: none;
+ 
+  	top: 0;
+  	left: 0;
+  	height: 100vh;
+  	width: 100vw;
+  	transition: opacity 0.3s ease;
+}
+
+.show {
+  pointer-events: auto;
+  display: flex;
+}
+
+.kanban__modal-content {
+  background-color: #E5E5E5;
+  min-width: 30%;
+  max-width: 80%;
+  padding: 2%;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-align: center;
+
+  border: 5px;
+  border-style: solid;
+  border-color: #393e46;
+}
+
+.kanban__modal-content h1 {
+  margin: 0;
+
+}
+
+.kanban__modal-content p {
+  opacity: 0.7;
+  font-size: 14px;
+}
+
+.kanban__modal-content button{
+	min-width: 20%;
+	padding: 8px;
+	font-size: 14px;
+	color: white;
+	background: #00adb5;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+
 
 
 

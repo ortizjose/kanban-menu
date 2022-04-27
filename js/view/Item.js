@@ -1,14 +1,13 @@
 import DropZone from "./DropZone.js";
 import KanbanAPI from "../api/KanbanAPI.js";
-import Column from "./Column.js"
-import Modal from "./Modal.js"
-import bootstrap from "bootstrap"
+import Column from "./Column.js";
+import Modal from "./Modal.js";
 
 export default class Item {
 	constructor(id, content, priority) {
 		const bottomDropZone = DropZone.createDropZone();
 		//debugger;	
-		const ModalButton = Modal.createModal(id);
+		const ModalButton = new Modal(id, content);
 
 
 		this.elements = {};
@@ -22,13 +21,17 @@ export default class Item {
 
 
 
+
 		this.elements.root.dataset.id = id;
 		this.elements.input.textContent = content;
 		this.elements.select.value = priority;
 		this.content = content;
 		this.priority = priority;
 		this.elements.root.appendChild(bottomDropZone);
-		this.elements.root.appendChild(ModalButton);
+		this.elements.root.appendChild(ModalButton.elements.root);
+		this.elements.buttonModal = this.elements.root.querySelector(".acceptModal");
+
+		console.log(ModalButton.elements.root);
 
 		const onBlur = () => {
 			const newContent = this.elements.input.textContent.trim();
@@ -50,15 +53,31 @@ export default class Item {
 		this.elements.input.addEventListener("blur", onBlur);
 		this.elements.select.addEventListener("blur", onBlur);
 		this.elements.root.addEventListener("dblclick", () => {
-			const check = confirm("Are you sure you want to delete this item?");
+
+				ModalButton.elements.root.classList.add('show');
+
+			/*const check = confirm("Are you sure you want to delete this item?");
 
 			if (check) {
 				KanbanAPI.deleteItem(id);
 
 				this.elements.input.removeEventListener("blur", onBlur);
 				this.elements.root.parentElement.removeChild(this.elements.root);
+			}*/
+		});
+
+		ModalButton.elements.root.addEventListener("click", event => {
+
+			if ( event.target.className === "acceptModal" ){
+
+				KanbanAPI.deleteItem(id);
+				this.elements.input.removeEventListener("blur", onBlur);
+				this.elements.root.parentElement.removeChild(this.elements.root);
+
+				ModalButton.elements.root.classList.remove('show');			
 			}
 		});
+
 
 
 
@@ -78,27 +97,22 @@ export default class Item {
 		this.elements.root.addEventListener("touchend", event => {
 			 touchend = Date.now();
 
-			if ( event.target.className === "kanban__item-box" || event.target.className === "kanban__item-box"  ) {
+			if ( event.target.className === "kanban__item-box" && (touchend - touchstart) < 500 ) {
 
-				if( (touchend - touchstart) < 500 ) { // Pulsacion corta
+				if ( this.elements.columMobile.style.display === "none" || this.elements.columMobile.style.display === "" )
+					this.elements.columMobile.style.display = "block";	
+				else 
+					this.elements.columMobile.style.display = "none";
 
-					if ( this.elements.columMobile.style.display === "none" || this.elements.columMobile.style.display === "" )
-						this.elements.columMobile.style.display = "block";	
-					else 
-						this.elements.columMobile.style.display = "none";
-				
-					//console.log(this.elements.columMobile);
-				}
-				else { // Pulsacion larga
-					console.log("¿BORRAR?");
-					console.log(document.getElementById("modal"+id));
-					var myModal = new bootstrap.Modal(ModalButton, {});
-					myModal.show();
-
-				}
-
-			console.log(touchend-touchstart);
 			}
+			else if( (touchend - touchstart) > 500 ){ // Pulsacion larga
+
+				ModalButton.elements.root.classList.add('show');
+
+			}
+
+			console.log(touchend - touchstart+" sec click");
+
 		});
 
 
@@ -156,8 +170,6 @@ export default class Item {
 
 
 		this.elements.input.addEventListener("drop", e => {
-						//console.log("2");
-
 			e.preventDefault();
 		});
 	}
@@ -178,15 +190,11 @@ export default class Item {
 				</select>
 
 				<div class="kanban__item-input" contenteditable></div>
-
-				<div class="kanban__item-delete">
-
-				<div>
 					
 				<div class="kanban__column-select">
-					<button class="kanban__column-button button-1 col-md-3">Por Hacer</button>
-					<button class="kanban__column-button button-2 col-md-3">Haciendo</button>
-					<button class="kanban__column-button button-3 col-md-3">Hecho</button>
+					<button class="kanban__column-button button-1 col-md-3 col-lg-12 col-xl-3">Por Hacer</button>
+					<button class="kanban__column-button button-2 col-md-3 col-lg-12 col-xl-3">Haciendo</button>
+					<button class="kanban__column-button button-3 col-md-3 col-lg-12 col-xl-3">Hecho</button>
 				</div>
 
 			  </div>
