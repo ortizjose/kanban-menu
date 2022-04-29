@@ -11,6 +11,7 @@ export default class Column {
 		this.elements.title = this.elements.root.querySelector(".kanban__column-title");
 		this.elements.items = this.elements.root.querySelector(".kanban__column-items");
 		this.elements.addItem = this.elements.root.querySelector(".kanban__add-item");
+		this.elements.priorityButtons = document.getElementsByClassName('kanban__item-priority');		
 
 		this.elements.root.dataset.id = id;
 		this.elements.title.textContent = title;
@@ -20,11 +21,17 @@ export default class Column {
 			const newItem = KanbanAPI.insertItem(id, "");
 
 			this.renderItem(newItem);
+			KanbanAPI.cambioColor(this.elements.priorityButtons);
+
 		});
 
 		KanbanAPI.getItems(id).forEach(item => {
+
 			this.renderItem(item);
 		});
+
+
+
 	}
 
 	static createRoot() {
@@ -46,4 +53,11 @@ export default class Column {
 
 		this.elements.items.appendChild(item.elements.root);
 	}
+
 }
+
+
+
+
+
+

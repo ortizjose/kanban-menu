@@ -29,7 +29,6 @@ export default class KanbanAPI {
 	}
 
 	static updateItem(itemId, newProps, newPriority) {
-		console.log("update: "+itemId+" || "+newProps+" || "+newPriority);
 
 		const data = read();
 		const [item, currentColumn] = (() => {
@@ -49,7 +48,6 @@ export default class KanbanAPI {
 		item.content = newProps.content === undefined ? item.content : newProps.content;
 
 		if (newPriority != null ){
-			console.log("ENTRO");
 			item.priority = newPriority.priority; 
 		}
 
@@ -97,7 +95,50 @@ export default class KanbanAPI {
 				return column.items.length;
 		}
 
-	}	
+	}
+
+	static cambioColor(priorityButtons) {
+
+	  for ( let i of priorityButtons){
+
+	  //AL CARGAR LA PAG
+	  switch(i.value){
+	    case '-1':
+	      i.style.background = "linear-gradient(to right, #393e46 50%, #67696B )";
+	       break;
+	    case '0':
+	      i.style.background = "linear-gradient(to right, #2563eb 60%, #60a5fa )";    
+	       break;
+	    case '1':
+	      i.style.background = "linear-gradient(to right, #059669 50%, #34d399 )";    
+	       break;
+	    case '2':
+	      i.style.background = "linear-gradient(to right, #D9433F 50%, #FA7A76 )";    
+	       break;            
+	  }
+
+	  i.addEventListener('change', (event) =>{  
+
+	    switch(i.value){
+	      case '-1':
+	        i.style.background = "linear-gradient(to right, #393e46 50%, #67696B )";
+	         break;
+	      case '0':
+	        i.style.background = "linear-gradient(to right, #2563eb 60%, #60a5fa )";    
+	         break;
+	      case '1':
+	        i.style.background = "linear-gradient(to right, #059669 50%, #34d399 )";    
+	         break;
+	      case '2':
+	        i.style.background = "linear-gradient(to right, #D9433F 50%, #FA7A76 )";    
+	         break;            
+	    }
+
+	    });
+	  }
+	}
+
+
 }
 
 function read() {
@@ -126,3 +167,5 @@ function read() {
 function save(data) {
 	localStorage.setItem("kanban-data", JSON.stringify(data));
 }
+
+

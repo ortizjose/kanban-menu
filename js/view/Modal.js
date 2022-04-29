@@ -1,6 +1,5 @@
 export default class Modal {
 	constructor(itemId, itemContent) {		
-		console.log("MODAL CREATE");
 
 		this.elements = {};
 		this.elements.root = Modal.createRoot(itemId,itemContent);
@@ -10,14 +9,6 @@ export default class Modal {
 		this.elements.CloseButton.addEventListener("click", () => {
 				this.elements.root.classList.remove('show');
 		});	
-
-		this.elements.AcceptButton.addEventListener("click", e => {
-		e.preventDefault();		
-	
-
-		});
-
-
 
 	}
 	static createRoot(itemId, itemContent) {
@@ -32,7 +23,7 @@ export default class Modal {
 		    <h1>¿Desea borrar el elemento?</h1>
 		    <p> El elemento "`+itemContent+`" va a proceder a eliminarse del panel.</p>
 		    <button class="closeModal">Rechazar</button>
-		    <button class="acceptModal">Aceptar</button>
+		    <button id="acceptModal-`+itemId+`">Aceptar</button>
 		  </div>
 		`).children[0];
 	}

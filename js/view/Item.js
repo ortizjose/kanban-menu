@@ -7,8 +7,7 @@ export default class Item {
 	constructor(id, content, priority) {
 		const bottomDropZone = DropZone.createDropZone();
 		//debugger;	
-		const ModalButton = new Modal(id, content);
-
+		//const ModalButton = new Modal(id, content);
 
 		this.elements = {};
 		this.elements.root = Item.createRoot();
@@ -28,10 +27,7 @@ export default class Item {
 		this.content = content;
 		this.priority = priority;
 		this.elements.root.appendChild(bottomDropZone);
-		this.elements.root.appendChild(ModalButton.elements.root);
-		this.elements.buttonModal = this.elements.root.querySelector(".acceptModal");
 
-		console.log(ModalButton.elements.root);
 
 		const onBlur = () => {
 			const newContent = this.elements.input.textContent.trim();
@@ -51,10 +47,15 @@ export default class Item {
 		};
 
 		this.elements.input.addEventListener("blur", onBlur);
-		this.elements.select.addEventListener("blur", onBlur);
+		this.elements.select.addEventListener("click", onBlur);
 		this.elements.root.addEventListener("dblclick", () => {
 
-				ModalButton.elements.root.classList.add('show');
+		var modalButton = new Modal(id, content);
+		document.querySelector('body').appendChild(modalButton.elements.root);
+		modalButton.elements.root.classList.add('show');
+		var acceptModal = document.querySelector("#acceptModal-"+id);
+		createAcceptEventListener(acceptModal, modalButton.elements.root, this.elements.input, this.elements.root );
+
 
 			/*const check = confirm("Are you sure you want to delete this item?");
 
@@ -65,21 +66,6 @@ export default class Item {
 				this.elements.root.parentElement.removeChild(this.elements.root);
 			}*/
 		});
-
-		ModalButton.elements.root.addEventListener("click", event => {
-
-			if ( event.target.className === "acceptModal" ){
-
-				KanbanAPI.deleteItem(id);
-				this.elements.input.removeEventListener("blur", onBlur);
-				this.elements.root.parentElement.removeChild(this.elements.root);
-
-				ModalButton.elements.root.classList.remove('show');			
-			}
-		});
-
-
-
 
 		/* ### STAR MOBILE EVENTS ### */
 		var touchstart;
@@ -96,7 +82,7 @@ export default class Item {
 		
 		this.elements.root.addEventListener("touchend", event => {
 			 touchend = Date.now();
-
+			 //debugger;
 			if ( event.target.className === "kanban__item-box" && (touchend - touchstart) < 500 ) {
 
 				if ( this.elements.columMobile.style.display === "none" || this.elements.columMobile.style.display === "" )
@@ -107,7 +93,11 @@ export default class Item {
 			}
 			else if( (touchend - touchstart) > 500 ){ // Pulsacion larga
 
-				ModalButton.elements.root.classList.add('show');
+				const modalButton = new Modal(id, content);
+				document.querySelector('body').appendChild(modalButton.elements.root);
+				modalButton.elements.root.classList.add('show');
+				var acceptModal = document.querySelector("#acceptModal-"+id);
+				createAcceptEventListener(acceptModal, modalButton.elements.root, this.elements.input, this.elements.root );
 
 			}
 
@@ -115,48 +105,38 @@ export default class Item {
 
 		});
 
+		//Funcion que añade un el EventListener de borrar cuando se crea el Modal
+		function createAcceptEventListener(acceptButton, modalButton, inputElement, rootElement) {
+
+			acceptButton.addEventListener("click", event => {
+
+				KanbanAPI.deleteItem(id);
+				inputElement.removeEventListener("blur", onBlur);
+				rootElement.parentElement.removeChild(rootElement);
+
+				modalButton.classList.remove('show');
+
+			});
+
+		}
+
+
 
 		/* Change column mobille start */ 
 
-		this.elements.buttonColum1.addEventListener("click", () => {
+		this.elements.buttonColum1.addEventListener("click", event => {
 
-			console.log("COL1");
-			var colPos = KanbanAPI.getNumItemsCol(id,1);
-			console.log("CP:"+colPos)
-
-			KanbanAPI.updateItem(id,{
-				columnId: 1,
-				position: colPos
-			});
-			location.reload(true);			
-
+			Item.moveItemMobile(1, id, event.path[3], this.elements.columMobile);
 		});
 
 		this.elements.buttonColum2.addEventListener("click", event => {
-			console.log("COL2 "+id);
 
-			var colPos = KanbanAPI.getNumItemsCol(id,2);
-			console.log("CP:"+colPos)
-
-			KanbanAPI.updateItem(id,{
-				columnId: 2,
-				position: colPos
-			});
-			location.reload(true);
+			Item.moveItemMobile(2, id, event.path[3], this.elements.columMobile);
 		});
 
 		this.elements.buttonColum3.addEventListener("click", () => {
 
-			console.log("COL3");
-			var colPos = KanbanAPI.getNumItemsCol(id,3);
-			console.log("CP:"+colPos)
-
-			KanbanAPI.updateItem(id,{
-				columnId: 3,
-				position: colPos
-			});
-			location.reload(true);			
-
+			Item.moveItemMobile(3, id, event.path[3], this.elements.columMobile);
 		});
 		 /*Change column mobille end */
 
@@ -200,5 +180,26 @@ export default class Item {
 			  </div>
 			</div>
 		`).children[0];
+	}
+
+
+
+	static moveItemMobile(column, itemId, itemFragment, columMobile) {
+
+		var colPos = KanbanAPI.getNumItemsCol(itemId,column);
+
+		const columns = Array.from(document.querySelectorAll(".kanban__column"));
+		const columnItemSide = columns[column-1].querySelector(".kanban__column-items");
+		const columItems =  Array.from(columns[column-1].querySelectorAll(".kanban__item"));
+
+		
+		columnItemSide.after(columItems[columItems.length-1] ,itemFragment);
+		columMobile.style.display = "none";
+
+		KanbanAPI.updateItem(itemId,{
+				columnId: column,
+				position: colPos
+			});
+
 	}
 }
